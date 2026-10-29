@@ -195,3 +195,6 @@ macOS/Linux 将 `py -3` 换成 `python3`。测试使用独立的临时数据库�
 覆盖：重复口味、Size 显示价与记账价、旧数据仅升级一次、None 不加珍珠、按首单新西兰日期归档、重复归档请求不重复写日志、先进先出、删除与完成的撤销、永久删除扣减、整批归档累计、防止过期页面误操作、断线重试不重复、并发写入、双客户端读取一致，以及不公开源码/数据库文件。
 
 已完成浏览器操作与 390 × 844 手机尺寸检查；尚未在你自己的两台 iPhone、Windows 电脑与摊位网络上实测。正式使用前请按上述步骤试一杯。
+
+## AI Declaration
+This project (or parts of this project) was written with AI using ChatGPT. Content is manually verified, edited, or approved by human reviewers.
