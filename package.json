@@ -1,0 +1,10 @@
+{
+  "name": "boba-stall-orders",
+  "version": "1.0.0",
+  "private": true,
+  "description": "奶茶摊前后端订单与销售记录",
+  "scripts": {
+    "dev": "python3 .openai/preview.py",
+    "test": "python3 -m unittest discover -s tests -v"
+  }
+}

@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f5ed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Yoyoo Food Station">
+<meta name="description" content="奶茶摊的接单、制作与销售记录。两种果汁，一种珍珠，一杯刚刚好。">
+<title>Yoyoo Food Station · 订单系统</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231d5148'/%3E%3Cpath d='M19 22h28l-4 30H23z' fill='%23f4c06d'/%3E%3Cpath d='M36 12l-4 28' stroke='%23fff' stroke-width='5'/%3E%3Cg fill='%231d5148'%3E%3Ccircle cx='29' cy='45' r='3'/%3E%3Ccircle cx='37' cy='45' r='3'/%3E%3Ccircle cx='33' cy='37' r='3'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root{--paper:#f7f5ed;--white:#fffefb;--ink:#203d36;--muted:#74817a;--green:#245a4c;--green-dark:#173f35;--line:#e4e6dc;--pink:#b94361;--shadow:0 16px 50px #233e3510;--radius:23px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:#edeFE6;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:disabled{cursor:default;opacity:.4}button:focus-visible,a:focus-visible{outline:3px solid #c07724;outline-offset:4px}button{border:0}h1,h2,p{margin:0}svg{display:block;flex-shrink:0}button svg{pointer-events:none}button{transition:transform .12s,background .15s,box-shadow .15s}button:active:not(:disabled){transform:scale(.985)}.hidden{display:none!important}
+#app{height:100vh;height:100dvh;max-width:920px;margin:auto;background:var(--paper);position:relative;overflow:hidden;box-shadow:0 0 80px #223c3210}.page{height:100%;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);position:relative}.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:20px 24px 15px;flex-shrink:0}.brand{display:flex;align-items:center;gap:9px;font-weight:750;font-size:clamp(13px,3.8vw,16px);letter-spacing:0;min-width:0}.brand-name{min-width:0;line-height:1.35}.logo{flex-shrink:0;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:var(--green);color:#ffdda0}.connection{display:flex;align-items:center;gap:6px;border:1px solid #dfe5d9;border-radius:30px;background:#fff9;padding:8px 10px;font-size:11px;font-weight:600;white-space:nowrap}.status-dot{width:6px;height:6px;border-radius:50%;background:#71a178}.connection.demo .status-dot{background:#d2a24e}.connection.offline{color:#a13646;border-color:#e7bbc2;background:#fff0f0}.connection.offline .status-dot{background:#be4e60}.nav-btn{display:inline-flex;align-items:center;gap:5px;background:transparent;min-height:42px;padding:6px 0;font-size:15px;font-weight:600}.nav-btn svg{width:21px;height:21px}.section-title{padding:8px 24px 18px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-shrink:0}.section-title h1{font-size:29px;line-height:1.3;letter-spacing:-.8px;font-weight:780}.subtitle{font-size:12px;color:var(--muted);line-height:1.7;margin-top:7px}.count-badge{display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;border:1px solid #dae0d3;border-radius:10px;padding:4px 10px;margin-left:10px;font-size:14px;color:var(--green);font-weight:650;letter-spacing:0;position:relative;top:-3px}.role-pill{font-size:12px;color:#537468;background:#e6eee0;padding:8px 11px;border-radius:10px;white-space:nowrap;margin-top:4px}.home-content{display:flex;flex-direction:column;flex:1;min-height:0;overflow:auto;padding:12px 24px calc(24px + env(safe-area-inset-bottom))}.home-cards{display:grid;grid-template-rows:repeat(3,minmax(90px,1fr));gap:15px;flex:1;min-height:0}.home-card{position:relative;overflow:hidden;text-align:left;display:flex;align-items:center;gap:17px;min-height:0;height:100%;padding:25px;border-radius:24px;border:1px solid #e0e5da;background:var(--white);box-shadow:0 4px 15px #203f3104}.home-card.front{background:var(--green);border-color:var(--green);color:#fffdf5}.home-card h2{font-size:clamp(28px,3.8vh,38px);font-weight:700;letter-spacing:2px}.home-card p{font-size:12px;margin-top:7px;color:#839184}.home-card.front p{color:#cbdcc9}.card-icon{height:57px;width:57px;display:flex;align-items:center;justify-content:center;border:1px solid #dfe5d8;background:#f0f3e9;border-radius:19px;color:var(--green)}.front .card-icon{background:#ffffff0d;border-color:#ffffff2b;color:#f6d294}.sales .card-icon{background:#f8eade;border-color:#f0dfd0;color:#ad7654}.card-icon svg{height:29px;width:29px}.home-arrow{margin-left:auto;opacity:.65}.home-arrow svg{width:20px}
+.order-area{display:flex;flex:1;flex-direction:column;min-height:0;padding:0 18px}.list-caption{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#899280;letter-spacing:.4px;padding:0 7px 11px;flex-shrink:0}.order-list{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding:0 2px 14px;scrollbar-width:thin;scrollbar-color:#c8d3c3 transparent}.order-card{width:100%;display:block;text-align:left;background:var(--white);border:1px solid #e0e5d9;border-radius:18px;padding:0;margin-bottom:12px;overflow:hidden;box-shadow:0 2px 8px #26463105}.order-meta{height:37px;display:flex;align-items:center;gap:8px;padding:0 13px;font-size:10px;letter-spacing:.3px;color:#92998b}.order-meta .order-num{font-weight:750;font-size:13px;color:#547064;letter-spacing:.7px;font-variant-numeric:tabular-nums}.order-time{margin-left:auto}.making{border-radius:6px;padding:3px 6px;font-size:9px;background:#e8eee1;color:#5d795f}.order-panels{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(49px,.48fr);min-height:99px}.flavor-panel{padding:15px 11px;display:flex;align-items:center;font-size:21px;line-height:1.27;font-weight:760;letter-spacing:-.6px;color:#56462f;background:var(--flavor-bg,#f9edcf)}.flavor-text{overflow-wrap:break-word;word-break:normal}.single-flavor{display:inline-block;max-width:100%;word-break:keep-all}.flavor-text .plus{font-weight:450;opacity:.5;padding:0 3px}.pearl-panel{background:var(--pearl-bg,#f4dfe5);padding:13px 10px;display:flex;flex-direction:column;justify-content:center;gap:6px;color:var(--pearl-ink,#8b4d62)}.panel-label{font-size:11px;font-weight:500;opacity:.75}.pearl-value{font-size:18px;font-weight:750;line-height:1.25;overflow-wrap:break-word}.size-panel{padding:12px 4px;background:#f2f3e9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}.size-value{font-weight:750;font-size:19px;white-space:nowrap}.size-volume{font-size:10px;color:#97a087}.empty{min-height:230px;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:12px;color:#8b9786;padding:15px}.empty-icon{width:83px;height:83px;border:1px dashed #d4ddcd;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f0f2e6}.empty-icon svg{width:35px;height:35px;color:#96ab8d}.empty strong{font-weight:600;font-size:16px;color:#5c7566}.empty p{font-size:12px;line-height:1.8}.bottom-bar{padding:14px 22px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--paper);flex-shrink:0}.primary-btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:55px;width:100%;border-radius:17px;background:var(--green);color:#fffdf5;font-size:17px;font-weight:650;border:1px solid transparent}.primary-btn svg{width:22px;height:22px}.primary-btn:hover:not(:disabled){background:var(--green-dark)}.secondary-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.secondary-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:48px;border:1px solid #d9dfd1;border-radius:14px;background:#fffdf8;font-size:13px;font-weight:600}.secondary-btn svg{height:17px;width:17px}.complete-btn{color:var(--green);background:#e5eddc;border-color:#d9e3cc}.read-only-foot{display:flex;align-items:center;justify-content:center;gap:7px;padding:15px 20px calc(22px + env(safe-area-inset-bottom));font-size:11px;color:#8b9885}.read-only-foot svg{width:14px;height:14px}
+.archive-stats{margin:0 24px 20px;background:var(--green);color:#fffdf2;border-radius:20px;padding:21px 20px;display:grid;grid-template-columns:1fr 1fr;gap:10px;flex-shrink:0;position:relative}.archive-stat+.archive-stat{padding-left:18px;border-left:1px solid #ffffff24}.stat-label{font-size:11px;color:#c3d3bd;line-height:1.6}.stat-value{font-size:29px;font-weight:700;letter-spacing:-.5px;margin-top:5px;font-variant-numeric:tabular-nums}.stat-value small{font-size:12px;margin-left:3px;font-weight:400;color:#c9d7c2}.money-prefix{font-size:13px;font-weight:500;margin-right:3px;letter-spacing:0}.summary{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.summary-count{font-size:11px;color:#7b8a76;line-height:1.8}.summary-count b{font-weight:750;color:#365847;font-size:20px;margin-left:5px}.summary-money{text-align:right}.summary-money span{font-size:11px;color:#7b8a76;display:block}.summary-money strong{display:block;font-size:27px;color:var(--green);font-variant-numeric:tabular-nums;letter-spacing:-.7px;margin-top:3px}.summary-money strong small{font-size:12px;font-weight:500;letter-spacing:0}.archive-btn{background:#edeedf;color:#466345;border:1px solid #dae0cb;font-size:14px;min-height:50px}.sales-title{padding-bottom:14px}.sales-title h1{font-size:27px}.sales-list-title{padding:0 7px 10px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}.sales-list-title h2{font-size:16px;font-weight:650}.sales-list-title span{font-size:11px;color:#8b9782}.sales-list-title b{font-weight:500}.note-banner{font-size:11px;line-height:1.6;padding:9px 13px;background:#fce9d6;color:#98652b;margin:0 24px 12px;border-radius:10px;flex-shrink:0}
+.wizard-header{display:flex;align-items:center;justify-content:space-between;padding:17px 24px 12px;flex-shrink:0}.cancel-btn{min-height:42px;padding:0 12px;border-radius:11px;background:#edeFE5;color:#788370;font-size:13px}.step-track{display:flex;gap:7px;padding:4px 24px 22px;flex-shrink:0}.step-dot{height:4px;flex:1;background:#e0e4d5;border-radius:5px}.step-dot.passed{background:#8ca880}.step-dot.active{background:var(--green)}.wizard-content{padding:2px 24px 20px;flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}.step-kicker{font-size:11px;color:#8d9984;letter-spacing:2px;margin-bottom:10px}.wizard-content h1{font-size:33px;line-height:1.25;font-weight:780;letter-spacing:-1px}.wizard-help{font-size:12px;color:#8a9480;line-height:1.8;margin-top:11px;margin-bottom:22px}.choices{display:flex;flex-direction:column;gap:12px}.choice{display:flex;align-items:center;gap:15px;text-align:left;border:2px solid transparent;width:100%;min-height:91px;padding:20px;border-radius:20px;background:var(--choice-bg,#f7e6be);color:var(--choice-ink,#775c32);position:relative}.fruit-marker{height:43px;width:43px;border-radius:50%;background:#ffffff6b;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}.fruit-marker svg{width:29px;height:29px;opacity:.8}.choice-name{font-size:24px;line-height:1.1;font-weight:750;letter-spacing:-.5px}.choice-arrow{margin-left:auto;opacity:.4;width:18px}.choice.selected{border-color:var(--green);box-shadow:0 0 0 3px #245a4c0a}.choice.selected .choice-arrow{opacity:1;color:var(--green)}.pearl-choices{gap:10px}.pearl-choices .choice{min-height:72px;padding:13px 18px;border-radius:18px}.pearl-choices .choice-name{font-size:22px}.pearl-choices .fruit-marker{height:37px;width:37px}.pearl-choices .fruit-marker svg{height:25px;width:25px}.recipe-strip{display:flex;align-items:center;flex-wrap:wrap;gap:7px;border-top:1px solid var(--line);margin-top:25px;padding-top:17px;font-size:11px;color:#87917f;line-height:1.8}.recipe-strip strong{font-weight:600;color:#55705a}.size-choice{background:#fffefa;border-color:#e3e6da;min-height:125px;padding:21px}.size-choice .cup-icon{width:49px;height:64px;color:#819b71;margin:0 10px}.size-choice .choice-name{font-size:26px}.size-choice .choice-desc{color:#9aa18d;font-size:12px;margin-top:9px}.size-price{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:23px;color:#71866a;font-weight:650;letter-spacing:-.5px}.size-price small{font-size:12px;font-weight:500;letter-spacing:0}.size-choice.selected{background:#edf1df;border-color:var(--green)}.size-choice.selected .size-price{color:var(--green)}.size-choice.dimmed{background:#eaece3;color:#9ba392;border-color:#e1e5d8}.size-choice.dimmed .cup-icon,.size-choice.dimmed .size-price{color:#a6af9a}.wizard-bottom{padding:13px 24px calc(21px + env(safe-area-inset-bottom));flex-shrink:0}.wizard-bottom .primary-btn{min-height:51px;font-size:15px}.wizard-bottom .hint{font-size:10px;text-align:center;color:#97a18c;margin-top:10px}.wizard-spacer{flex-shrink:0;height:calc(12px + env(safe-area-inset-bottom))}
+.modal-overlay{position:fixed;inset:0;z-index:20;background:#17352ddd;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:24px;animation:fade-in .13s ease}.modal-sheet{width:100%;max-width:440px;border-radius:28px;background:var(--paper);padding:28px 24px;box-shadow:0 24px 80px #0a211c55;position:relative;max-height:90dvh;overflow:auto;animation:rise-in .16s ease}.modal-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.modal-top h2{font-size:23px;font-weight:750}.modal-close{background:#e8ecdf;display:flex;align-items:center;justify-content:center;border-radius:50%;width:31px;height:31px;color:#819276}.modal-close svg{height:17px;width:17px}.modal-caption{font-size:11px;color:#95a085;line-height:1.8;margin-top:8px}.detail-list{display:flex;flex-direction:column;gap:19px;margin-top:27px;margin-bottom:25px}.detail-row{padding-bottom:17px;border-bottom:1px solid #e0e5d6}.detail-row:last-child{margin-bottom:0}.detail-label{font-size:12px;color:#819176;margin-bottom:8px}.detail-value{font-size:27px;line-height:1.3;font-weight:750;letter-spacing:-.5px;overflow-wrap:break-word}.detail-price{font-size:13px;color:#718468;margin-top:6px}.danger-btn{min-height:48px;width:100%;border-radius:15px;background:#f5e0de;color:#b24655;font-size:14px;font-weight:650;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #efd2d0}.danger-btn svg{width:17px;height:17px}.tap-close{text-align:center;font-size:10px;color:#94a087;line-height:1.8;margin-top:17px}.confirm-copy{font-size:14px;line-height:1.9;color:#708164;margin-top:20px;margin-bottom:22px}.confirm-copy strong{color:#b04652;font-weight:650}.confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.confirm-actions .secondary-btn,.confirm-actions .danger-btn{min-height:49px}.confirm-actions .primary-btn{min-height:49px;font-size:14px}.confirm-order{font-size:13px;padding:12px;background:#ebeede;border-radius:12px;margin-top:12px;color:#5b7353}.toast{position:fixed;bottom:calc(26px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);max-width:min(90vw,480px);width:max-content;background:#1c4439;color:#fffdf6;border:1px solid #ffffff26;padding:13px 19px;border-radius:16px;z-index:40;font-size:13px;line-height:1.7;box-shadow:0 8px 40px #203f3326;animation:fade-in .15s ease}.toast.error{background:#974856}.global-error{position:fixed;inset:0;z-index:60;background:var(--paper);padding:40px 25px;color:#7b3d42;font-size:15px;line-height:2}.busy-screen{position:fixed;top:0;left:0;right:0;height:3px;background:#e3bd69;z-index:50;animation:pulse 1s infinite}.help-link{background:transparent;text-decoration:underline;text-underline-offset:3px;color:#7f8c77;font-size:11px;padding:9px 0}.help-copy{font-size:13px;line-height:1.9;color:#6a7c60;margin-top:17px}.help-copy p{margin:12px 0}.help-copy strong{font-weight:650;color:#345b44}.help-copy code{font:inherit;overflow-wrap:anywhere;color:#345b44}.tiny-note{font-size:10px;color:#94a087;line-height:1.7;margin-top:12px;text-align:center}
+
+.history-link{display:flex;align-items:center;gap:7px;padding:7px 9px;margin:10px 0 0 -2px;border-radius:9px;background:#ffffff12;border:1px solid #ffffff23;color:#edf3e5;font-size:11px;font-weight:600}.history-link svg{width:13px;height:13px}.history-link:hover{background:#ffffff20}.history-card{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:20px;margin:0 0 13px;box-shadow:0 2px 8px #26463105}.history-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:17px;margin-bottom:17px;border-bottom:1px solid var(--line)}.history-date{font-size:21px;line-height:1.4;font-weight:750;letter-spacing:-.5px}.history-legacy{font-size:10px;padding:5px 7px;white-space:nowrap;border-radius:7px;color:#927e5a;background:#f5eddc}.history-values{display:grid;grid-template-columns:1fr 1fr;gap:15px}.history-values>div+div{padding-left:17px;border-left:1px solid var(--line)}.history-values span{font-size:11px;color:var(--muted);display:block;margin-bottom:8px}.history-values strong{font-size:27px;font-weight:750;color:var(--green);font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.8px}.history-values small{font-size:12px;letter-spacing:0;font-weight:500}.history-values>div+div strong{font-size:25px}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}@keyframes rise-in{from{transform:translateY(10px);opacity:.4}to{transform:translateY(0);opacity:1}}@keyframes pulse{50%{opacity:.35}}
+@media(min-width:650px){.topbar{padding:24px 36px 20px}.home-content{padding:14px 54px calc(32px + env(safe-area-inset-bottom))}.home-cards{gap:20px}.home-card{padding:30px 34px}.home-card h2{font-size:38px}.section-title{padding-left:36px;padding-right:36px}.order-area{padding:0 30px}.order-panels{grid-template-columns:1.65fr 1fr .5fr;min-height:111px}.flavor-panel{font-size:29px;padding:19px 24px}.pearl-panel{padding:16px 24px}.pearl-value{font-size:25px}.size-value{font-size:25px}.panel-label{font-size:12px}.order-meta{padding:0 20px}.bottom-bar{padding-left:36px;padding-right:36px}.primary-btn{min-height:58px}.archive-stats{margin-left:36px;margin-right:36px}.stat-value{font-size:34px}.wizard-header,.step-track{padding-left:48px;padding-right:48px}.wizard-content{padding:12px 48px 20px}.wizard-content h1{font-size:39px}.choices{gap:14px}.choice{min-height:103px;padding:24px}.pearl-choices .choice{min-height:77px}.wizard-bottom{padding-left:48px;padding-right:48px}.note-banner{margin-left:36px;margin-right:36px}}
+@media(max-height:720px){.topbar{padding-top:12px;padding-bottom:8px}.home-content{padding-top:8px}.home-cards{gap:12px}.home-card{padding:20px}.home-card h2{font-size:28px}.section-title{padding-top:3px;padding-bottom:12px}.section-title h1{font-size:26px}.archive-stats{padding:15px 18px;margin-bottom:14px}.bottom-bar{padding-top:11px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}.wizard-header{padding-top:10px;padding-bottom:5px}.step-track{padding-bottom:15px}.wizard-content h1{font-size:29px}.wizard-help{margin:8px 0 16px}.choice{min-height:79px;padding:15px 19px}.pearl-choices{gap:8px}.pearl-choices .choice{min-height:62px;padding:10px 16px}.pearl-choices .choice-name{font-size:20px}.recipe-strip{margin-top:16px}.size-choice{min-height:107px}.wizard-bottom{padding-top:8px;padding-bottom:calc(13px + env(safe-area-inset-bottom))}.order-panels{min-height:88px}.flavor-panel{font-size:20px}.modal-sheet{padding:23px}.detail-list{gap:15px;margin:21px 0}.detail-value{font-size:25px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"><div class="empty"><div class="empty-icon">●</div><strong>正在准备订单小站…</strong></div></div>
+<div id="modal-root"></div>
+<div id="toast-root" aria-live="polite" aria-atomic="true"></div>
+<div id="busy" class="busy-screen hidden" role="status" aria-label="正在保存"></div>
+<script>
+'use strict';
+(() => {
+  const FLAVORS = {
+    mango:{en:'Mango',zh:'芒果',bg:'#f9edce',ink:'#896824',icon:'mango'},
+    strawberry:{en:'Strawberry',zh:'草莓',bg:'#f7e1de',ink:'#a25a61',icon:'strawberry'},
+    passion:{en:'Passion Fruit',zh:'百香果',bg:'#eae3ee',ink:'#7e6488',icon:'passion'}
+  };
+  const PEARLS = {
+    strawberry:{en:'Strawberry',zh:'草莓',bg:'#f4dfe5',ink:'#9a4f66'},
+    apple:{en:'Green Apple',zh:'青苹果',bg:'#e6edcb',ink:'#637d32'},
+    blueberry:{en:'Blueberry',zh:'蓝莓',bg:'#e6e1f1',ink:'#72608b'},
+    mango:{en:'Mango',zh:'芒果',bg:'#f8e5b9',ink:'#a27b2c'},
+    watermelon:{en:'Watermelon',zh:'西瓜',bg:'#f8dfe0',ink:'#a75c65'},
+    none:{en:'None',zh:'无珍珠',bg:'#e8ebe1',ink:'#687762'}
+  };
+  const SIZES={large:{zh:'大杯',ml:700,cents:699,accountingCents:700},small:{zh:'小杯',ml:500,cents:599,accountingCents:600}};
+  const DEMO=document.documentElement.dataset.testMode==='true' || location.protocol==='file:' || new URLSearchParams(location.search).get('demo')==='1';
+  const API_BASE=document.documentElement.dataset.apiBase || '';
+  const DATA_KEY='boba-orders.demo.v1', PENDING_KEY='boba-orders.pending.v1'+API_BASE;
+  const $=id=>document.getElementById(id);
+  const fresh=()=>({schemaVersion:3,revision:0,nextNumber:1,queue:[],completed:[],archived:{count:0,cents:0},archiveHistory:[],undo:[]});
+  let state=fresh(),loaded=DEMO,online=DEMO,busy=false,polling=false,modal=null,focusBefore=null;
+  let storageAvailable=true,storageCorrupt=false,pending=null,toastTimer,draft={flavors:[],pearl:null,size:null};
+  let lastScroll={};
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  const uuid=()=>globalThis.crypto?.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+  const money=c=>(c/100).toFixed(2);
+  const total=orders=>orders.reduce((sum,o)=>sum+o.accountingCents,0);
+  const number=n=>String(n).padStart(3,'0');
+  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const route=()=>{
+    const parts=location.hash.slice(1).split('/');
+    return {page:['front','back','sales','history','new'].includes(parts[0])?parts[0]:'home',step:Math.min(3,Math.max(0,parseInt(parts[1],10)||0))};
+  };
+  const canMutate=()=>loaded&&!busy&&!pending&&!storageCorrupt&&(DEMO||online);
+  const flavorName=(id,english)=>FLAVORS[id][english?'en':'zh'];
+  const pearlName=(id,english)=>PEARLS[id][english?'en':'zh'];
+  const label=(o,english)=>o.flavors.map(id=>flavorName(id,english)).join(' + ');
+  const orderDateFormat=new Intl.DateTimeFormat('en-NZ',{timeZone:'Pacific/Auckland',year:'numeric',month:'2-digit',day:'2-digit'});
+  const orderDate=iso=>{const parts=orderDateFormat.formatToParts(new Date(iso));const get=type=>parts.find(p=>p.type===type).value;return `${get('year')}-${get('month')}-${get('day')}`;};
+  const historyDate=date=>date?`${date.slice(0,4)}年${Number(date.slice(5,7))}月${Number(date.slice(8,10))}日`:'升级前归档';
+  const time=iso=>new Date(iso).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit',hour12:false});
+  const icons={
+    arrow:'<path d="m9 5 7 7-7 7"/>',back:'<path d="m15 5-7 7 7 7"/>',plus:'<path d="M12 5v14M5 12h14"/>',
+    check:'<path d="m5 12 4 4L19 6"/>',close:'<path d="m6 6 12 12M6 18 18 6"/>',
+    undo:'<path d="m9 5-5 5 5 5M4 10h10a6 6 0 0 1 0 12" transform="translate(0 -2)"/>',
+    delete:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/>',
+    list:'<rect x="5" y="4" width="14" height="17" rx="3"/><path d="M9 9h6M9 13h6M9 17h3M9 2h6"/>',
+    cup:'<path d="M6 7h13l-2 14H8L6 7ZM5 7h15M13 3l-2 13"/><circle cx="11" cy="18" r=".6"/><circle cx="14.5" cy="18" r=".6"/>',
+    chart:'<path d="M4 4v16h17M8 15v-4M13 15V7M18 15V4"/>',
+    eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+    none:'<circle cx="12" cy="12" r="8"/><path d="m6 18 12-12"/>',
+    archive:'<rect x="4" y="4" width="16" height="4" rx="1"/><path d="M6 8v12h12V8M10 12h4"/>',
+    mango:'<path d="M18 4C8 2 3 9 5 16s13 6 15-3c1-4-1-7-2-9Z"/><path d="M10 8c-4 3-4 7-2 9M18 4l2-2"/>',
+    strawberry:'<path d="M6 7C1 11 7 22 12 23c5-2 11-13 6-16-4-2-8-2-12 0Z" transform="translate(0 -2)"/><path d="m8 4 4 3 4-3M12 2v4M8 10h.01M15 11h.01M10 15h.01M14 17h.01"/>',
+    passion:'<circle cx="12" cy="13" r="8"/><circle cx="12" cy="13" r="5"/><path d="M12 5c0-3 4-4 6-3M9 11h.01M14 10h.01M12 14h.01M9 16h.01M15 16h.01"/>',
+    boba:'<path d="M3 12c1 7 17 7 18 0M4 14l2 5h12l2-5"/><circle cx="7" cy="10" r="2.5"/><circle cx="13" cy="7" r="2.5"/><circle cx="17" cy="11" r="2.5"/><circle cx="11" cy="12" r="2.5"/>'
+  };
+  function icon(name,cls=''){return `<svg class="${cls}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name]||icons.cup}</svg>`;}
+  function toast(message,error=false){clearTimeout(toastTimer);$('toast-root').innerHTML=`<div class="toast ${error?'error':''}" role="${error?'alert':'status'}">${esc(message)}</div>`;toastTimer=setTimeout(()=>$('toast-root').innerHTML='',error?6000:2700);}
+  function validateState(s){
+    if(s?.schemaVersion===1||s?.schemaVersion===2){
+      if(s.schemaVersion===1){
+        for(const o of [...s.queue,...s.completed,...s.undo.map(e=>e.order)])o.accountingCents=SIZES[o.size].accountingCents;
+        s.archived.cents+=s.archived.count;
+      }
+      s.archiveHistory=s.archived.count||s.archived.cents?[{id:'legacy',date:null,count:s.archived.count,cents:s.archived.cents,archivedAt:null,legacy:true}]:[];
+      s.schemaVersion=3;s.revision++;
+    }
+    if(s?.schemaVersion!==3||!Number.isSafeInteger(s.revision)||!Number.isSafeInteger(s.nextNumber)||!Array.isArray(s.queue)||!Array.isArray(s.completed)||!Array.isArray(s.undo)||!Array.isArray(s.archiveHistory)||!Number.isSafeInteger(s.archived?.count)||!Number.isSafeInteger(s.archived?.cents))throw Error('订单数据无法读取。');
+    for(const o of [...s.queue,...s.completed,...s.undo.map(e=>e.order)]){
+      if(!o||typeof o.id!=='string'||!Number.isSafeInteger(o.number)||!Array.isArray(o.flavors)||o.flavors.length!==2||!o.flavors.every(f=>Object.hasOwn(FLAVORS,f))||!Object.hasOwn(PEARLS,o.pearl)||!Object.hasOwn(SIZES,o.size)||!Number.isSafeInteger(o.priceCents)||o.priceCents<0||!Number.isSafeInteger(o.accountingCents)||o.accountingCents<0||!Number.isFinite(Date.parse(o.createdAt)))throw Error('订单数据不完整。');
+    }
+    for(const log of s.archiveHistory){
+      if(!log||typeof log.id!=='string'||!(log.date===null||/^\d{4}-\d{2}-\d{2}$/.test(log.date))||!Number.isSafeInteger(log.count)||log.count<0||!Number.isSafeInteger(log.cents)||log.cents<0)throw Error('归档历史无法读取。');
+    }
+    return s;
+  }
+  function readLocal(){
+    try{const raw=localStorage.getItem(DATA_KEY);if(!raw)return fresh();const parsed=JSON.parse(raw),legacy=parsed.schemaVersion===1||parsed.schemaVersion===2;const next=validateState(parsed);if(legacy)localStorage.setItem(DATA_KEY,JSON.stringify(next));return next;}
+    catch(error){storageCorrupt=true;toast('本机订单数据无法读取。请保留浏览器数据，暂勿清除。',true);return fresh();}
+  }
+  try{const key='boba-orders.storage-check';localStorage.setItem(key,'1');localStorage.removeItem(key);}catch{storageAvailable=false;}
+  if(DEMO&&storageAvailable)state=readLocal();
+  if(!DEMO&&storageAvailable){try{const raw=localStorage.getItem(PENDING_KEY);if(raw){pending=JSON.parse(raw);if(!pending.requestId||!pending.action)throw Error();}}catch{storageCorrupt=true;}}
+  function connection(){
+    const cls=DEMO?'demo':!online||pending?'offline':'';
+    const message=DEMO?'本机测试':pending?'核实上次提交':online?'已连接 · 自动同步':loaded?'连接中断 · 点此重连':'正在连接';
+    return `<button class="connection ${cls}" data-action="${DEMO?'help':'reconnect'}" aria-label="${message}"><i class="status-dot"></i>${message}</button>`;
+  }
+  function brand(){return `<div class="brand"><span class="logo">${icon('cup')}</span><span class="brand-name">Yoyoo Food Station</span></div>`;}
+  function topbar(home=false){return `<header class="topbar">${home?brand():`<button class="nav-btn" data-action="home">${icon('back')}返回</button>`}${connection()}</header>`;}
+  function warning(){return storageCorrupt?'<div class="note-banner" role="alert">本机数据无法读取，已暂停操作。请保留浏览器数据。</div>':!storageAvailable?'<div class="note-banner" role="alert">浏览器无法保存本机记录，关闭页面后可能丢失。</div>':!DEMO&&(!online||pending)?`<div class="note-banner" role="alert">${pending?'上次提交结果待核实，正在安全重试。请勿重复创建订单。':'连接已中断，当前显示上次收到的订单。恢复连接后才能继续操作。'}</div>`:'';}
+  function home(){return `<div class="page">${topbar(true)}${warning()}<main class="home-content"><div class="home-cards"><button class="home-card front" data-action="navigate" data-page="front"><span class="card-icon">${icon('list')}</span><span><h2>前端</h2><p>新建订单 · 接单与完成</p></span><span class="home-arrow">${icon('arrow')}</span></button><button class="home-card back" data-action="navigate" data-page="back"><span class="card-icon">${icon('cup')}</span><span><h2>后端</h2><p>查看队列 · 按顺序制作</p></span><span class="home-arrow">${icon('arrow')}</span></button><button class="home-card sales" data-action="navigate" data-page="sales"><span class="card-icon">${icon('chart')}</span><span><h2>销售信息</h2><p>完成记录 · 数量与金额</p></span><span class="home-arrow">${icon('arrow')}</span></button></div></main></div>`;}
+  function empty(kind){const title=!loaded?'正在连接订单服务器…':kind==='sales'?'还没有已完成的订单':'当前没有待制作订单';const sub=kind==='sales'?'在前端完成的订单会显示在这里':'新的搭配，马上就来。';return `<div class="empty"><div class="empty-icon">${icon(kind==='sales'?'chart':'cup')}</div><strong>${title}</strong><p>${sub}</p></div>`;}
+  function card(o,english,index,sales=false){
+    const f=FLAVORS[o.flavors[0]],p=PEARLS[o.pearl],s=SIZES[o.size];
+    return `<button class="order-card" data-action="detail" data-id="${esc(o.id)}" aria-label="订单 ${number(o.number)}，${esc(label(o,english))}，珍珠 ${pearlName(o.pearl,english)}，${s.zh}" style="--flavor-bg:${f.bg};--pearl-bg:${p.bg};--pearl-ink:${p.ink}"><div class="order-meta"><span class="order-num">${number(o.number)}</span>${!sales&&index===0?'<span class="making">队首订单</span>':''}<span class="order-time">${sales?'完成于':'下单于'} ${time(sales?o.completedAt||o.createdAt:o.createdAt)}</span></div><div class="order-panels"><div class="flavor-panel"><span class="flavor-text"><span class="single-flavor">${flavorName(o.flavors[0],english)}</span><span class="plus"> + </span><span class="single-flavor">${flavorName(o.flavors[1],english)}</span></span></div><div class="pearl-panel"><span class="panel-label">珍珠：</span><span class="pearl-value">${pearlName(o.pearl,english)}</span></div><div class="size-panel"><span class="panel-label">Size</span><span class="size-value">${s.zh}</span><span class="size-volume">${s.ml} mL</span></div></div></button>`;
+  }
+  function queuePage(page){const front=page==='front',disabled=!canMutate();return `<div class="page">${topbar()}<div class="section-title"><div><h1>当前订单<span class="count-badge">${loaded?state.queue.length:'—'}</span></h1><p class="subtitle">按接单顺序排列 · 点击订单查看详情</p></div><span class="role-pill">${front?'前端':'后端'}</span></div>${warning()}<main class="order-area"><div class="list-caption"><span>果汁搭配</span><span>${front?'新订单追加到队尾':'先制作最上方的一单'}</span></div><div class="order-list" id="order-list" aria-label="当前订单列表">${state.queue.length?state.queue.map((o,i)=>card(o,front,i)).join(''):empty('queue')}</div></main>${front?`<footer class="bottom-bar"><button class="primary-btn" data-action="new" ${disabled?'disabled':''}>${icon('plus')}新建订单</button><div class="secondary-row"><button class="secondary-btn" data-action="undo" ${disabled||!state.undo.length?'disabled':''}>${icon('undo')}撤销删除/归档</button><button class="secondary-btn complete-btn" data-action="complete" ${disabled||!state.queue.length?'disabled':''}>${icon('check')}完成订单</button></div></footer>`:`<footer class="read-only-foot">${icon('eye')}制作端 · 订单自动更新</footer>`}</div>`;}
+  function salesPage(){return `<div class="page">${topbar()}<div class="section-title sales-title"><div><h1>销售信息</h1><p class="subtitle">每一杯的记录，都在这里。</p></div><span class="role-pill">营业记录</span></div>${warning()}<section class="archive-stats" aria-label="永久归档统计"><div class="archive-stat"><p class="stat-label">已归档订单数量：</p><div class="stat-value">${state.archived.count}<small>单</small></div><button class="history-link" data-action="navigate" data-page="history">详细历史${icon('arrow')}</button></div><div class="archive-stat"><p class="stat-label">已归档金额：</p><div class="stat-value"><span class="money-prefix">NZ$</span>${money(state.archived.cents)}</div></div></section><main class="order-area"><div class="sales-list-title"><h2>当前已完成订单</h2><span>共 <b>${state.completed.length}</b> 单 · 点击查看详情</span></div><div class="order-list" id="order-list" aria-label="已完成订单列表">${state.completed.length?state.completed.map((o,i)=>card(o,false,i,true)).join(''):empty('sales')}</div></main><footer class="bottom-bar"><div class="summary"><div class="summary-count">当前已完成订单数量：<br><b>${state.completed.length}</b> 单</div><div class="summary-money"><span>当前总金额：</span><strong><small>NZ$</small> ${money(total(state.completed))}</strong></div></div><button class="primary-btn archive-btn" data-action="ask-archive" ${!canMutate()||!state.completed.length?'disabled':''}>${icon('archive')}永久归档当前列表</button></footer></div>`;}
+  function historyPage(){
+    const logs=[...state.archiveHistory].reverse();
+    const rows=logs.map(log=>`<article class="history-card" role="listitem"><div class="history-card-top"><span class="history-date">${historyDate(log.date)}</span>${log.legacy?'<span class="history-legacy">日期未知</span>':''}</div><div class="history-values"><div><span>订单数量：</span><strong>${log.count}<small> 单</small></strong></div><div><span>订单总金额：</span><strong><small>NZ$ </small>${money(log.cents)}</strong></div></div></article>`).join('');
+    return `<div class="page"><header class="topbar"><button class="nav-btn" data-action="navigate" data-page="sales">${icon('back')}返回</button>${connection()}</header><div class="section-title"><div><h1>已归档日志</h1><p class="subtitle">每次永久归档单独记录 · 日期取首单下单日期</p></div></div>${warning()}<main class="order-area"><div class="order-list" id="order-list" role="list" aria-label="已归档日志列表">${rows||`<div class="empty"><div class="empty-icon">${icon('archive')}</div><strong>${loaded?'暂无归档日志':'正在读取归档历史…'}</strong><p>永久归档后，会在这里记录日期、数量与金额。</p></div>`}</div></main><footer class="read-only-foot">${logs.length} 条归档记录 · 日期按新西兰时间显示</footer></div>`;
+  }
+  function recipe(){const names=draft.flavors.filter(Boolean).map(id=>flavorName(id,true)).join(' + ');return names?`<div class="recipe-strip"><span>当前搭配</span><strong>${names}</strong>${draft.pearl?`<span>／</span><strong>珍珠：${pearlName(draft.pearl,true)}</strong>`:''}</div>`:'';}
+  function choice(id,info,step,selected){return `<button class="choice ${selected?'selected':''}" style="--choice-bg:${info.bg};--choice-ink:${info.ink}" data-action="choose" data-value="${id}" data-step="${step}"><span class="fruit-marker">${icon(step===2?(id==='none'?'none':'boba'):info.icon)}</span><span class="choice-name">${info.en}</span>${icon(selected?'check':'arrow','choice-arrow')}</button>`;}
+  function wizard(step){
+    const titles=['口味一','口味二','珍珠','选择 Size'];
+    const hints=['选择第一种果汁口味。','再选一种口味，也可以和口味一相同。','选择一种珍珠，或选择 None 不加珍珠。','选好大杯或小杯，再点击完成创建。'];
+    let options='';
+    if(step<2)options=`<div class="choices">${Object.entries(FLAVORS).map(([id,f])=>choice(id,f,step,draft.flavors[step]===id)).join('')}</div>`;
+    else if(step===2)options=`<div class="choices pearl-choices">${Object.entries(PEARLS).map(([id,p])=>choice(id,p,step,draft.pearl===id)).join('')}</div>`;
+    else options=`<div class="choices">${Object.entries(SIZES).map(([id,s])=>`<button class="choice size-choice ${draft.size===id?'selected':draft.size?'dimmed':''}" data-action="size" data-value="${id}" aria-pressed="${draft.size===id}">${icon('cup','cup-icon')}<span><span class="choice-name">${s.zh}</span><span class="choice-desc" style="display:block">${s.ml} mL</span></span><span class="size-price"><small>NZ$</small>${money(s.cents)}${draft.size===id?icon('check'):''}</span></button>`).join('')}</div>`;
+    return `<div class="page"><header class="wizard-header"><button class="nav-btn" data-action="wizard-back">${icon('back')}返回</button><button class="cancel-btn" data-action="cancel">取消</button></header><div class="step-track" aria-label="第 ${step+1} 步，共 4 步">${[0,1,2,3].map(i=>`<i class="step-dot ${i===step?'active':i<step?'passed':''}"></i>`).join('')}</div>${warning()}<main class="wizard-content" id="wizard-content"><div class="step-kicker">新建订单 · ${step+1} / 4</div><h1>${titles[step]}</h1><p class="wizard-help">${hints[step]}</p>${options}${recipe()}</main>${step===3?`<footer class="wizard-bottom"><button class="primary-btn" data-action="submit" ${!draft.size||draft.flavors.length!==2||!draft.pearl||!canMutate()?'disabled':''}>${icon('check')}完成创建${draft.size?` · NZ$${money(SIZES[draft.size].cents)}`:''}</button><p class="hint">创建后，订单会追加到队列末尾</p></footer>`:'<div class="wizard-spacer"></div>'}</div>`;
+  }
+  function render(){
+    const r=route();
+    const oldList=$('order-list');if(oldList)lastScroll[r.page]=oldList.scrollTop;
+    const oldWizard=$('wizard-content'),wizardScroll=oldWizard?.scrollTop||0;
+    $('app').innerHTML=r.page==='home'?home():r.page==='sales'?salesPage():r.page==='history'?historyPage():r.page==='new'?wizard(r.step):queuePage(r.page);
+    if($('order-list'))$('order-list').scrollTop=lastScroll[r.page]||0;
+    if($('wizard-content'))$('wizard-content').scrollTop=wizardScroll;
+    $('busy').classList.toggle('hidden',!busy);
+    if(modal?.type==='detail'){
+      const list=modal.role==='sales'?state.completed:state.queue;
+      if(!list.some(o=>o.id===modal.id)){closeModal();return;}
+    }
+    if(modal)renderModal();
+  }
+  function navigate(page){closeModal();location.hash=page==='home'?'':page;}
+  function closeModal(){modal=null;$('modal-root').innerHTML='';if(focusBefore?.isConnected)focusBefore.focus();focusBefore=null;}
+  function openModal(value){focusBefore=document.activeElement;modal=value;renderModal();setTimeout(()=>$('modal-root').querySelector('button')?.focus(),0);}
+  function renderModal(){
+    if(!modal)return;
+    let content='',outside=true;
+    if(modal.type==='detail'){
+      const o=(modal.role==='sales'?state.completed:state.queue).find(o=>o.id===modal.id);if(!o)return closeModal();
+      const english=modal.role==='front',s=SIZES[o.size];
+      content=`<div class="modal-top"><h2>订单 ${number(o.number)}</h2><button class="modal-close" data-action="dismiss" aria-label="关闭详情">${icon('close')}</button></div><p class="modal-caption">${modal.role==='sales'?'已完成':'待制作'} · ${time(o.createdAt)} 下单</p><div class="detail-list"><div class="detail-row"><div class="detail-label">口味：</div><div class="detail-value">${label(o,english)}</div></div><div class="detail-row"><div class="detail-label">珍珠：</div><div class="detail-value" style="color:${PEARLS[o.pearl].ink}">${pearlName(o.pearl,english)}</div></div><div class="detail-row"><div class="detail-label">Size：</div><div class="detail-value">${s.zh}</div><div class="detail-price">${s.ml} mL · NZ$${money(o.priceCents)}</div></div></div>${modal.role!=='back'?`<button class="danger-btn" data-action="${modal.role==='sales'?'ask-delete-sales':'delete-order'}" data-id="${esc(o.id)}" ${!canMutate()?'disabled':''}>${icon('delete')}删除订单</button>`:''}<p class="tap-close">点击${modal.role==='back'?'任意位置':'删除按钮以外的任意位置'}关闭</p>`;
+    }else if(modal.type==='delete-confirm'){
+      outside=false;
+      const o=state.completed.find(o=>o.id===modal.id);
+      if(!o)return closeModal();
+      content=`<div class="modal-top"><h2>永久删除这笔订单？</h2>${modalClose()}</div><p class="confirm-copy"><strong>删除该订单会永久失去该订单的信息。</strong><br>当前订单数量将减少 1 单，当前总金额将减少 NZ$${money(o.accountingCents)}。此操作无法撤销。</p><div class="confirm-order">订单 ${number(o.number)} · ${label(o,false)}<br>珍珠：${pearlName(o.pearl,false)} · Size：${SIZES[o.size].zh}</div><div class="confirm-actions" style="margin-top:20px"><button class="secondary-btn" data-action="dismiss">取消</button><button class="danger-btn" data-action="confirm-delete-sales" data-id="${esc(o.id)}" ${!canMutate()?'disabled':''}>确认永久删除</button></div>`;
+    }else if(modal.type==='archive-confirm'){
+      outside=false;
+      content=`<div class="modal-top"><h2>永久归档当前列表？</h2>${modalClose()}</div><p class="confirm-copy">将当前 <strong>${modal.ids.length} 单 · NZ$${money(modal.cents)}</strong> 计入上方的已归档数据。<br>当前列表将清空，金额和数量会保留。日期、数量和金额可在“详细历史”查看；订单明细无法恢复或撤销。</p><div class="confirm-actions"><button class="secondary-btn" data-action="dismiss">取消</button><button class="primary-btn" data-action="confirm-archive" ${!canMutate()?'disabled':''}>确认归档</button></div>`;
+    }else{
+      outside=false;
+      content=`<div class="modal-top"><h2>${DEMO?'先试一试，再开始营业':'两台手机，一份订单'}</h2>${modalClose()}</div><div class="help-copy">${DEMO?'<p><strong>当前是本机测试。</strong>新建、完成、删除、撤销与销售统计都可以操作；记录保存在此浏览器。不同手机打开测试文件，不会互相同步。</p>':'<p><strong>当前是双机同步模式。</strong>两台手机打开同一个完整访问地址，一台进入前端，另一台进入后端。订单约每秒更新，回到页面会立即刷新。</p>'}<p>双机使用：在电脑解压项目，启动 <strong>start-windows.cmd</strong>，再让两台手机与电脑连接同一个 Wi-Fi，使用 Safari 打开启动窗口中的“手机访问”地址。</p><p>不需要外网。营业期间保持电脑开机、服务窗口打开；手机锁屏后停止刷新，唤醒页面会重新同步。</p><p>小杯 500 mL：<strong>NZ$5.99</strong><br>大杯 700 mL：<strong>NZ$6.99</strong></p><p>“完成订单”将队首移入销售信息；撤销会将最近一次删除或完成的订单放回队首，并扣回对应销售金额。</p><p>同步版数据保存在电脑。不要在正式营业时切换测试模式；测试记录与同步版记录相互独立。</p></div><button class="primary-btn" data-action="dismiss" style="font-size:14px;min-height:47px;margin-top:17px">知道了</button>`;
+    }
+    $('modal-root').innerHTML=`<div class="modal-overlay" data-action="overlay-dismiss"><section class="modal-sheet" role="dialog" aria-modal="true" aria-label="${modal.type==='detail'?'订单详情':modal.type==='help'?'使用说明':'确认操作'}" data-close-anywhere="${outside}">${content}</section></div>`;
+  }
+  function modalClose(){return `<button class="modal-close" data-action="dismiss" aria-label="关闭">${icon('close')}</button>`;}
+
+  function applyLocal(s,action,payload){
+    if(action==='create'){
+      if(!Array.isArray(payload.flavors)||payload.flavors.length!==2||!payload.flavors.every(f=>Object.hasOwn(FLAVORS,f))||!Object.hasOwn(PEARLS,payload.pearl)||!Object.hasOwn(SIZES,payload.size))throw Error('请选择完整的口味、珍珠和 Size。');
+      s.queue.push({id:uuid(),number:s.nextNumber++,flavors:[...payload.flavors],pearl:payload.pearl,size:payload.size,priceCents:SIZES[payload.size].cents,accountingCents:SIZES[payload.size].accountingCents,createdAt:new Date().toISOString()});
+    }else if(action==='complete'){
+      if(!s.queue.length||s.queue[0].id!==payload.id)throw Error('队首订单已变化，请核对后再完成。');
+      const o=s.queue.shift();s.undo.push({kind:'complete',order:clone(o)});o.completedAt=new Date().toISOString();s.completed.push(o);
+    }else if(action==='delete'||action==='sales_delete'){
+      const list=action==='delete'?s.queue:s.completed,i=list.findIndex(o=>o.id===payload.id);
+      if(i<0)throw Error('该订单已发生变化，请查看最新列表。');
+      const [o]=list.splice(i,1);
+      if(action==='delete')s.undo.push({kind:'delete',order:clone(o)});else s.undo=s.undo.filter(e=>e.order.id!==o.id);
+    }else if(action==='undo'){
+      const event=s.undo.pop();if(!event)throw Error('没有可以撤销的删除或归档。');
+      s.completed=s.completed.filter(o=>o.id!==event.order.id);delete event.order.completedAt;s.queue.unshift(event.order);
+    }else if(action==='archive'){
+      if(!s.completed.length)throw Error('当前没有可以归档的订单。');
+      if(JSON.stringify(payload.ids)!==JSON.stringify(s.completed.map(o=>o.id)))throw Error('完成订单列表已更新，请重新核对后归档。');
+      s.archiveHistory.push({id:uuid(),date:orderDate(s.completed[0].createdAt),count:s.completed.length,cents:total(s.completed),archivedAt:new Date().toISOString(),legacy:false});
+      s.archived.count+=s.completed.length;s.archived.cents+=total(s.completed);s.completed=[];
+      const ids=new Set(payload.ids);s.undo=s.undo.filter(e=>!ids.has(e.order.id));
+    }else throw Error('未知操作。');
+    s.revision++;return s;
+  }
+  async function request(path,options={}){
+    const abort=new AbortController(),timeout=setTimeout(()=>abort.abort(),5000);
+    try{
+      const response=await fetch(API_BASE+path,{...options,cache:'no-store',signal:abort.signal});
+      let data;try{data=await response.json();}catch{throw Error('服务器返回了无法读取的内容。');}
+      if(!response.ok){const error=Error(data.error||'操作失败，请重试。');error.definitive=response.status>=400&&response.status<500;throw error;}
+      return validateState(data);
+    }finally{clearTimeout(timeout);}
+  }
+  function accept(next){if(!loaded||next.revision>=state.revision){state=next;loaded=true;}}
+  function savePending(value){
+    if(storageAvailable){if(value)localStorage.setItem(PENDING_KEY,JSON.stringify(value));else localStorage.removeItem(PENDING_KEY);}
+    pending=value;
+  }
+  async function sendPending(){
+    if(!pending)return true;
+    const command=pending;
+    const next=await request('/api/commands',{method:'POST',headers:{'Content-Type':'application/json','X-Boba-Client':'1'},body:JSON.stringify(command)});
+    accept(next);savePending(null);online=true;
+    return true;
+  }
+  async function mutate(action,payload={}){
+    if(!canMutate())return false;
+    busy=true;render();
+    try{
+      if(DEMO){
+        const next=applyLocal(storageAvailable?readLocal():clone(state),action,payload);
+        if(storageCorrupt)throw Error('本机数据无法读取，已暂停操作。');
+        if(storageAvailable)localStorage.setItem(DATA_KEY,JSON.stringify(next));
+        state=next;
+      }else{
+        savePending({requestId:uuid(),action,payload});
+        // Retry the SAME request ID. A lost response can never create a second cup.
+        try{await sendPending();}catch(error){if(error.definitive)throw error;await sendPending();}
+      }
+      return true;
+    }catch(error){
+      if(error.definitive){savePending(null);await sync(true);}
+      else if(!DEMO)online=false;
+      const message=pending?'提交结果待核实。系统会自动重连，请勿重复下单。':error.name==='QuotaExceededError'?'浏览器存储空间不足，订单未保存。':error.message||'操作失败，请重试。';
+      toast(message,true);return false;
+    }finally{busy=false;render();}
+  }
+  async function sync(force=false){
+    if(DEMO||polling||(!force&&busy)||document.hidden&&!force)return;
+    polling=true;
+    const before=state.revision,wasOnline=online,wasLoaded=loaded;
+    try{
+      if(pending&&!busy){
+        busy=true;render();
+        const resolved=pending.action;
+        try{await sendPending();if(resolved==='create'&&route().page==='new'){draft={flavors:[],pearl:null,size:null};navigate('front');}closeModal();toast('上次操作已核实，订单已同步。');}
+        catch(error){if(error.definitive){savePending(null);toast(error.message,true);}else throw error;}
+        finally{busy=false;}
+      }
+      accept(await request('/api/state'));online=true;
+    }catch{online=false;}
+    finally{polling=false;if(state.revision!==before||online!==wasOnline||loaded!==wasLoaded||force)render();}
+  }
+  async function action(event){
+    const target=event.target.closest('[data-action]');
+    if(!target||target.disabled)return;
+    const a=target.dataset.action;
+    if(a==='overlay-dismiss'){
+      const sheet=event.target.closest('.modal-sheet');
+      if(!sheet||sheet.dataset.closeAnywhere==='true')closeModal();return;
+    }
+    if(a==='dismiss'){closeModal();return;}
+    if(a==='help'){openModal({type:'help'});return;}
+    if(a==='reconnect'){await sync(true);if(!online)toast('还没有连接上电脑，请检查 Wi-Fi 和服务器窗口。',true);return;}
+    if(busy)return;
+    if(a==='navigate'){navigate(target.dataset.page);return;}
+    if(a==='home'){navigate('home');return;}
+    if(a==='new'){draft={flavors:[],pearl:null,size:null};navigate('new/0');return;}
+    if(a==='cancel'){draft={flavors:[],pearl:null,size:null};navigate('front');return;}
+    if(a==='wizard-back'){const step=route().step;navigate(step?'new/'+(step-1):'front');return;}
+    if(a==='choose'){
+      const step=Number(target.dataset.step),v=target.dataset.value;
+      if(step<2)draft.flavors[step]=v;else draft.pearl=v;
+      navigate('new/'+(step+1));return;
+    }
+    if(a==='size'){draft.size=target.dataset.value;render();return;}
+    if(a==='detail'){openModal({type:'detail',id:target.dataset.id,role:route().page});return;}
+    if(a==='ask-delete-sales'){openModal({type:'delete-confirm',id:target.dataset.id});return;}
+    if(a==='ask-archive'){openModal({type:'archive-confirm',ids:state.completed.map(o=>o.id),cents:total(state.completed)});return;}
+    if(a==='submit'){
+      if(await mutate('create',{flavors:[...draft.flavors],pearl:draft.pearl,size:draft.size})){
+        const created=state.queue.at(-1);draft={flavors:[],pearl:null,size:null};navigate('front');toast(`订单 ${number(created?.number||state.nextNumber-1)} 已加入队尾`);
+      }return;
+    }
+    if(a==='complete'){
+      const first=state.queue[0];if(first&&await mutate('complete',{id:first.id}))toast(`订单 ${number(first.number)} 已完成`);return;
+    }
+    if(a==='undo'){if(await mutate('undo'))toast('订单已恢复到队首');return;}
+    if(a==='delete-order'){if(await mutate('delete',{id:target.dataset.id})){closeModal();toast('订单已删除，可撤销');}return;}
+    if(a==='confirm-delete-sales'){if(await mutate('sales_delete',{id:target.dataset.id})){closeModal();toast('订单已永久删除，金额已扣减');}return;}
+    if(a==='confirm-archive'){
+      const ids=[...(modal?.ids||[])];if(await mutate('archive',{ids})){closeModal();toast('当前列表已永久归档，数量与金额已累计');}return;
+    }
+  }
+  document.addEventListener('click',event=>{action(event).catch(()=>{busy=false;render();toast('操作未完成，请重试。',true);});});
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&modal){closeModal();event.preventDefault();}
+    if(event.key==='Tab'&&modal){const buttons=[...$('modal-root').querySelectorAll('button:not(:disabled)')];if(!buttons.length)return;const first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
+  });
+  window.addEventListener('hashchange',()=>{
+    closeModal();const r=route();
+    if(r.page==='new'){
+      const max=!draft.flavors[0]?0:!draft.flavors[1]?1:!draft.pearl?2:3;
+      if(r.step>max){location.hash='new/'+max;return;}
+    }
+    lastScroll={};render();
+    if($('wizard-content'))$('wizard-content').scrollTop=0;
+  });
+  window.addEventListener('storage',e=>{if(DEMO&&e.key===DATA_KEY&&!busy){state=readLocal();render();}});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync(true);});
+  window.addEventListener('online',()=>sync(true));
+  window.addEventListener('pageshow',()=>sync(true));
+  window.addEventListener('offline',()=>{if(!DEMO){online=false;render();}});
+  window.addEventListener('beforeunload',event=>{if(!DEMO&&(pending||busy)){event.preventDefault();event.returnValue='';}});
+  if(route().page==='new')location.hash='front';
+  render();if(!DEMO){sync(true);setInterval(()=>sync(),1000);}
+})();
+</script>
+</body>
+</html>
